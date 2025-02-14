@@ -24,10 +24,9 @@ class KtorClient @Inject constructor(
      * @return An [ApiOperation] containing either the fetched [OpenExchangeRatesEndPoint] data or an exception.
      */
     suspend fun getExchangeRates(): ApiOperation<OpenExchangeRatesEndPoint> {
-        val apiKey = when (BuildConfig.BUILD_TYPE) {
-            "debug" -> BuildConfig.API_KEY_DEBUG
-            else -> BuildConfig.API_KEY_RELEASE
-        }
+        val apiKey =
+            if (BuildConfig.BUILD_TYPE == "release") BuildConfig.API_KEY_RELEASE
+            else BuildConfig.API_KEY_DEBUG
         return makeApiCall {
             val response = httpClient.get(
                 urlString = "latest.json?app_id=$apiKey"
