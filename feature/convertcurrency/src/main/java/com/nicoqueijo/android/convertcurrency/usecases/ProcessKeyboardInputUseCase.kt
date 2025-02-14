@@ -4,6 +4,8 @@ import com.nicoqueijo.android.convertcurrency.util.KeyboardInput
 import com.nicoqueijo.android.core.extensions.deepCopy
 import com.nicoqueijo.android.core.model.Currency
 import com.nicoqueijo.android.core.model.Position
+import java.security.Key
+import kotlin.reflect.typeOf
 
 /**
  * Use case to process keyboard input for currency conversion.
@@ -63,6 +65,10 @@ class ProcessKeyboardInputUseCase {
             is KeyboardInput.Backspace -> {
                 existingText = if (keyboardInput.isLongClick) "" else existingText.dropLast(1)
                 focusedCurrency.conversion.valueAsString = existingText
+            }
+
+            is KeyboardInput.Clear -> {
+                focusedCurrency.conversion.valueAsString = ""
             }
         }
         focusedCurrency.isInputValid = isInputValid

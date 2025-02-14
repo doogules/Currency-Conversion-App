@@ -52,10 +52,11 @@ fun NumberPad(
         ) {
             NumPadKey.entries.forEach { key ->
                 if (key == NumPadKey.DECIMAL_SEPARATOR) {
-                    key.value = DecimalFormatSymbols.getInstance(state.locale).decimalSeparator
+                    key.value =
+                        DecimalFormatSymbols.getInstance(state.locale).decimalSeparator.toString()
                 }
                 NumberPadButton(
-                    char = key.value,
+                    symbol = key.value,
                     onClick = {
                         when (key) {
                             NumPadKey.ONE -> state.onKeyboardButtonClick?.invoke(
@@ -102,8 +103,16 @@ fun NumberPad(
                                 KeyboardInput.Number(digit = Digit.Zero)
                             )
 
+                            NumPadKey.TRIPLE_ZERO -> state.onKeyboardButtonClick?.invoke(
+                                KeyboardInput.Number(digit = Digit.tripleZero)
+                            )
+
                             NumPadKey.BACKSPACE -> state.onKeyboardButtonClick?.invoke(
                                 KeyboardInput.Backspace()
+                            )
+
+                            NumPadKey.CLEAR -> state.onKeyboardButtonClick?.invoke(
+                                KeyboardInput.Clear
                             )
                         }
                     },
@@ -128,7 +137,7 @@ fun NumberPad(
  * the provided event handlers.
  *
  * @param modifier The modifier to be applied to the button.
- * @param char The character to be displayed on the button.
+ * @param symbol The character to be displayed on the button.
  * @param onClick Lambda function to be invoked when the button is clicked.
  * @param onLongClick Lambda function to be invoked when the button is long-clicked.
  */
@@ -136,7 +145,7 @@ fun NumberPad(
 @Composable
 fun NumberPadButton(
     modifier: Modifier = Modifier,
-    char: Char,
+    symbol: String,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
@@ -170,7 +179,7 @@ fun NumberPadButton(
     ) {
         Text(
             modifier = modifier.align(Alignment.Center),
-            text = char.toString(),
+            text = symbol.toString(),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary,
             fontSize = 32.sp,

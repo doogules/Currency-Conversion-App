@@ -24,4 +24,6 @@ sealed class KeyboardInput {
      * @property isLongClick Indicates if the backspace was a long click.
      */
     class Backspace(val isLongClick: Boolean = false) : KeyboardInput()
+
+    data object Clear : KeyboardInput()
 }
